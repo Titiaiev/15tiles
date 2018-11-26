@@ -1,27 +1,52 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="ru">
 <head>
-  <title>Puzzle</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="css/style.css">
-  <script src="build/main.1.min.js"></script>
+  <script src="js/main.js"></script>
+  <title>Document</title>
 </head>
 <body>
-  
-  <!-- Этот код не нужно редактировать-->
-  <figure class="puzzle-figure">
-    
-    <ul class="puzzle">
-      <li class="tile">1</li>
-      <li class="tile">2</li>
-      <li class="tile">3</li>
-      <li class="tile">4</li>
-      <li class="tile">5</li>
-      <li class="tile">6</li>
-      <li class="tile">7</li>
-      <li class="tile">8</li>
-    </ul>
-    
-    <figcaption>A Puzzle</figcaption>
-  </figure>
+  <div class="app">
+
+    <div class="board">
+
+      <div class="tile">1</div>
+      <div class="tile">2</div>
+      <div class="tile">3</div>
+      <div class="tile">4</div>
+      <div class="tile">5</div>
+      <div class="tile">6</div>
+      <div class="tile">7</div>
+      <div class="tile">8</div>
+      <div class="tile">9</div>
+      <div class="tile">10</div>
+      <div class="tile">11</div>
+      <div class="tile">12</div>
+      <div class="tile">13</div>
+      <div class="tile">14</div>
+      <div class="tile">15</div>
+      <div class="tile empty"></div>
+
+    </div>
+
+    <div class="controls">
+
+      <div class="move-btns">
+        <button class="move up">&uarr;</button>
+        <button class="move left">&larr;</button>
+        <button class="move right">&rarr;</button>
+        <button class="move down">&darr;</button>
+      </div>
+
+      <div class="shufle">
+        <!-- <button>перемешать</button> -->
+      </div>
+
+    </div>
+
+  </div>
 </body>
 </html>
