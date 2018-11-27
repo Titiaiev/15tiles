@@ -22,6 +22,7 @@ class Board {
   init() {
     const { boardSize } = this;
     this.fields = [];
+    this.emptyField = this.boardSize - 1;
 
     const getUniqRandom = function getUniqRandom(max) {
       const uniqs = [];
@@ -119,8 +120,6 @@ class Board {
     });
 
     if (this.isCompleted) {
-      // this = null;
-      // eslint-disable-next-line no-alert
       console.log('Головоломка сложена! Поздравляю!');
     }
   }
@@ -172,9 +171,9 @@ class Board {
       case rightBtn:
         this.move(right);
         break;
-        // case shuffle:
-        //   this.shuffle();
-        //   break;
+      case shuffle:
+        this.shuffle();
+        break;
 
       default:
         break;
