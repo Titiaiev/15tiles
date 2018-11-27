@@ -12,16 +12,15 @@ body { font-family: sans-serif; }
   width: 500px;
 }
 
-
-
-
 .board {
   border-radius: 10px;
   background-color: #c05050;
+  border: 7px solid #c05050;
+  box-shadow: -1px -1px 5px rgba(0, 0, 0, 0.3) inset, 1px 1px 5px rgb(0, 0, 0, 0.3) inset;
   width: 100%;
   /* height: 500px; */
   /* height: auto; */
-  padding: 15px;
+  padding: 3px;
   font-size: 0;
 }
 
@@ -54,7 +53,7 @@ body { font-family: sans-serif; }
   width: 100%;
   margin: 0 auto;
   padding-top: 20px;
-  display: none;
+  /* display: none; */
 }
 
 .app button {
@@ -78,6 +77,10 @@ body { font-family: sans-serif; }
   margin-left: 7px;
 }
 
+.shuffle {
+  display: none;
+}
+
 @media screen and (max-width: 350px) {
   .app {
     width: 300px;
@@ -87,7 +90,7 @@ body { font-family: sans-serif; }
   }
 
   .board {
-    padding: 10px;
+    /* padding: 10px; */
   }
 
   .tile {
