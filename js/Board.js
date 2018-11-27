@@ -21,6 +21,25 @@ class Board {
 
   init() {
     const { boardSize } = this;
+    this.fields = [];
+
+    const getUniqRandom = function getUniqRandom(max) {
+      const uniqs = [];
+
+      const random = _max => Math.floor(1 + Math.random() * (_max));
+      let i = random(max);
+
+      while (uniqs.length < (max)) {
+        while (uniqs.includes(i)) {
+          i = random(max);
+        }
+        uniqs.push(i);
+        // getUniqRandom(max);
+      }
+      return uniqs;
+    };
+
+    const orders = getUniqRandom(15);
 
     for (let i = 0; i < boardSize; i += 1) {
       if (i === boardSize - 1) {
@@ -28,7 +47,7 @@ class Board {
         this.fields.push(emptyField);
         break;
       }
-      const tile = new Tile(this.boardSize - 1);
+      const tile = new Tile(orders[i]);
       this.fields.push(tile);
     }
 
@@ -92,9 +111,10 @@ class Board {
     const puzzleNode = document.getElementsByClassName('board')[0];
     puzzleNode.innerHTML = '';
     this.fields.forEach((f) => {
+      // console.log(this);
       if (f) {
         puzzleNode.appendChild(this.copyOfLi[f.order - 1]);
-        // console.log(f.order);
+        // console.log(f.order - 1);
       }
     });
 
@@ -107,7 +127,16 @@ class Board {
 
   // eslint-disable-next-line class-methods-use-this
   controler(e) {
+    const controls = document.getElementsByClassName('controls')[0];
+    const shuffle = controls.querySelector('button.shuffle');
+    const upBtn = controls.querySelector('button.up');
+    const downBtn = controls.querySelector('button.down');
+    const leftBtn = controls.querySelector('button.left');
+    const rightBtn = controls.querySelector('button.right');
+
     const code = e.keyCode;
+    const { target } = e;
+
     const {
       up, down, left, right,
     } = this.direction;
@@ -126,6 +155,27 @@ class Board {
         // console.log(this);
         this.move(down);
         break;
+      default:
+        break;
+    }
+
+    switch (target) {
+      case upBtn:
+        this.move(up);
+        break;
+      case downBtn:
+        this.move(down);
+        break;
+      case leftBtn:
+        this.move(left);
+        break;
+      case rightBtn:
+        this.move(right);
+        break;
+        // case shuffle:
+        //   this.shuffle();
+        //   break;
+
       default:
         break;
     }
