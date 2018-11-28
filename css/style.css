@@ -3,6 +3,12 @@
   margin: 0;
   padding: 0;
   font-size: 10px;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+   -khtml-user-select: none; /* Konqueror HTML */
+     -moz-user-select: none; /* Firefox */
+      -ms-user-select: none; /* Internet Explorer/Edge */
+          user-select: none;
 }
 body { font-family: sans-serif; }
 
@@ -68,6 +74,7 @@ body { font-family: sans-serif; }
 .move-btns {
   display: flex;
   justify-content: flex-end;
+  display: none;
 }
 
 .move-btns button {
@@ -78,7 +85,49 @@ body { font-family: sans-serif; }
 }
 
 .shuffle {
-  /* display: none; */
+  display: none;
+}
+
+#joystick {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  /* display: flex; */
+  margin: auto;
+  border-radius: 50%;
+  border: 2px solid #c05050;
+}
+
+#joystick .arows {
+  width: 50%;
+  height: 50%;
+  transform: rotate(45deg);
+  /* border: 2px solid #c05050; */
+  position: relative;
+  top: 50%;
+  left: 50%;
+  margin: -25%;
+  background-color: #c050501a;
+  /* z-index: 1; */
+}
+
+.arows > div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -45%;
+  /* margin: -50%; */
+  width: 90%;
+  height: 90%;
+  /* border: 15px solid rgba(0, 0, 0, 0.384) inset; */
+  /* outline: 2px solid #fffef9; */
+  border-radius: 50%;
+  background-color: #c05050;
+  box-shadow: 7px 0px 0px rgb(255, 255, 255),
+              -7px 0px 0px rgb(255, 255, 255),
+              0px 7px 0px rgb(255, 255, 255),
+              0px -7px 0px rgb(255, 255, 255);
+  /* z-index: 2000; */
 }
 
 @media screen and (max-width: 350px) {
