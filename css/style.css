@@ -10,12 +10,31 @@
       -ms-user-select: none; /* Internet Explorer/Edge */
           user-select: none;
 }
-body { font-family: sans-serif; }
+html {
+  /* display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  align-items: stretch;
+  align-content: center; */
+}
+body { 
+  font-family: sans-serif;
+  /* overflow-y: hidden; */
+  width: 100%;
+  height: 100vh;
+}
 
 .app {
   /* border: 1px solid black; */
-  margin: 50px auto;
-  width: 500px;
+  /* margin: 50px auto; */
+  /* width: 500px; */
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  align-items: center;
+  align-content: center;
+  height: 100vh;
+  /* margin: auto; */
 }
 
 .board {
@@ -23,12 +42,21 @@ body { font-family: sans-serif; }
   background-color: #c05050;
   border: 7px solid #c05050;
   box-shadow: -1px -1px 5px rgba(0, 0, 0, 0.3) inset, 1px 1px 5px rgb(0, 0, 0, 0.3) inset;
-  width: 100%;
-  /* height: 500px; */
+  width: 500px;
+  height: 500px;
   /* height: auto; */
   padding: 3px;
   font-size: 0;
+  margin-left: 20px;
 }
+
+.controls {
+  /* width: 100%; */
+  /* margin: 0 auto; */
+  padding: 20px;
+  display: none;
+}
+
 
 .tile {
   background-color: #fffef9;
@@ -55,12 +83,6 @@ body { font-family: sans-serif; }
   vertical-align: bottom;
 }
 
-.controls {
-  width: 100%;
-  margin: 0 auto;
-  padding-top: 20px;
-  /* display: none; */
-}
 
 .app button {
   padding: 10px 5px;
@@ -96,6 +118,7 @@ body { font-family: sans-serif; }
   margin: auto;
   border-radius: 50%;
   border: 2px solid #c05050;
+  overflow: hidden;
 }
 
 #joystick .arows {
@@ -130,22 +153,53 @@ body { font-family: sans-serif; }
   /* z-index: 2000; */
 }
 
-@media screen and (max-width: 350px) {
+@media (max-width: 350px), (max-height: 350px) {
+  .board {
+    border-radius: 10px;
+    border: 4px solid #c05050;
+    width: 290px;
+    height: 290px;
+    padding: 3px;
+    /* margin-left: 20px; */
+    margin: auto;
+    border-width: 4px;
+    padding: 1px;
+  }
+  
+  .controls {
+    padding: 20px;
+    display: none;
+  }
+
+  .tile {
+    font-size: 2.8rem;
+    line-height: 2.3;
+    border-width: 2px;
+    box-shadow: -1px -1px 1px rgba(153, 152, 152, .3) inset, 1px 1px 1px rgba(153, 152, 152, .6) inset;
+    /* box-shadow: none */
+  }
+
+  .app {
+    flex-direction: row;
+  }
+}
+
+/* @media screen and (max-width: 350px) {
   .app {
     width: 300px;
     height: 300px;
     margin: 0 auto;
     /* background-color: blue; */
-  }
+  /* } */
 
-  .board {
+  /* .board { */
     /* padding: 10px; */
-  }
+  /* }
 
   .tile {
     width: 68px;
     height: 68px;
     line-height: 2;
     font-size: 3rem;
-  }
-}
+  } */
+/* } */
