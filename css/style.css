@@ -10,13 +10,7 @@
       -ms-user-select: none; /* Internet Explorer/Edge */
           user-select: none;
 }
-html {
-  /* display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  align-items: stretch;
-  align-content: center; */
-}
+
 body { 
   font-family: sans-serif;
   /* overflow-y: hidden; */
@@ -48,6 +42,11 @@ body {
   padding: 3px;
   font-size: 0;
   margin-left: 20px;
+}
+
+.board.win {
+  background-color: #7250c0;
+  border-color: #7250c0;
 }
 
 .controls {
@@ -184,22 +183,3 @@ body {
   }
 }
 
-/* @media screen and (max-width: 350px) {
-  .app {
-    width: 300px;
-    height: 300px;
-    margin: 0 auto;
-    /* background-color: blue; */
-  /* } */
-
-  /* .board { */
-    /* padding: 10px; */
-  /* }
-
-  .tile {
-    width: 68px;
-    height: 68px;
-    line-height: 2;
-    font-size: 3rem;
-  } */
-/* } */

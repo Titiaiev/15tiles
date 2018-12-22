@@ -1,15 +1,15 @@
 /* eslint-disable import/extensions */
 import Tile from './Tile.js';
 import EmptyField from './EmptyField.js';
+import PositionGenerator from './PositionGenerator.js';
 
 class Board {
-  constructor(HTMLCollectionOfLi) {
-    this.tiles = HTMLCollectionOfLi;
-    this.boardSize = this.tiles.length;
-    this.sideLength = Math.sqrt(this.boardSize);
+  constructor(board) {
+    this.board = board;
+    this.sideLength = 4;
     this.fields = [];
-    this.emptyField = this.boardSize - 1;
-    this.copyOfLi = Array.from(HTMLCollectionOfLi).map(t => t.cloneNode(true));
+    this.emptyField = 15;
+
     this.direction = {
       up: { offset: 4, check(i) { return i < 16; } },
       down: { offset: -4, check(i) { return i >= 0; } },
@@ -20,9 +20,8 @@ class Board {
   }
 
   init() {
-    const { boardSize } = this;
     this.fields = [];
-    this.emptyField = this.boardSize - 1;
+    this.emptyField = 15;
 
     const getUniqRandom = function getUniqRandom(max) {
       const uniqs = [];
@@ -41,16 +40,18 @@ class Board {
     };
 
     const orders = getUniqRandom(15);
+    const posgen = new PositionGenerator(3);
+    window.posgen = posgen;
 
-    for (let i = 0; i < boardSize; i += 1) {
-      if (i === boardSize - 1) {
-        const emptyField = new EmptyField(boardSize);
-        this.fields.push(emptyField);
-        break;
-      }
-      const tile = new Tile(orders[i]);
+    for (let i = 0; i < 15; i += 1) {
+      const pos = posgen.next();
+      // console.log(pos);
+      const tile = new Tile(orders[i], pos);
+      // console.log(tile);
       this.fields.push(tile);
     }
+    this.fields.push(new EmptyField(posgen.next()));
+    // console.log(this.fields);
 
 
     if (!this.solvable(this.fields)) {
@@ -59,8 +60,6 @@ class Board {
     }
 
     this.render();
-
-    // console.log(this.fields);
   }
 
   shuffle() {
@@ -68,6 +67,11 @@ class Board {
   }
 
   swap(i1, i2) {
+    const i1pos = this.fields[i1].position;
+    const i2pos = this.fields[i2].position;
+    this.fields[i1].position = i2pos;
+    this.fields[i2].position = i1pos;
+
     const t = this.fields[i1];
     this.fields[i1] = this.fields[i2];
     this.fields[i2] = t;
@@ -76,7 +80,7 @@ class Board {
   get isCompleted() {
     return !this.fields.some((item, i) => {
       if (item) {
-        return item.order > 0 && item.order - 1 !== i;
+        return item.id > 0 && item.id - 1 !== i;
       }
     });
   }
@@ -89,7 +93,7 @@ class Board {
     let len;
     for (kDisorder = 0, i = 1, len = a.length - 1; i < len; i += 1) {
       // eslint-disable-next-line no-plusplus
-      for (let j = i - 1; j >= 0; j--) { if (a[j].order > a[i].order) kDisorder++; }
+      for (let j = i - 1; j >= 0; j--) { if (a[j].id > a[i].id) kDisorder++; }
     }
     // eslint-disable-next-line block-scoped-var
     return !(kDisorder % 2);
@@ -97,86 +101,34 @@ class Board {
 
   move(direction) {
     // console.log(this);
-    const { offset, check } = direction;
-    const newPosition = this.emptyField + offset;
+    if (
+      direction === 'up'
+      || direction === 'down'
+      || direction === 'left'
+      || direction === 'right'
+    ) {
+      const { offset, check } = this.direction[direction];
+      const newPosition = this.emptyField + offset;
 
-    if (check(newPosition)) {
-      this.swap(this.emptyField, newPosition);
-      this.emptyField = newPosition;
-    }
+      if (check(newPosition)) {
+        this.swap(this.emptyField, newPosition);
+        this.emptyField = newPosition;
+      }
 
-    this.render();
+      this.render();
+    } else throw new RangeError('Недопустимый аргумент! Метод принимает только: up, down, left, right.');
   }
 
   render() {
-    const puzzleNode = document.getElementsByClassName('board')[0];
-    puzzleNode.innerHTML = '';
+    const { board } = this;
+    board.innerHTML = '';
     this.fields.forEach((f) => {
-      // console.log(this);
-      if (f) {
-        puzzleNode.appendChild(this.copyOfLi[f.order - 1]);
-        // console.log(f.order - 1);
-      }
+      board.appendChild(f.el);
     });
 
     if (this.isCompleted) {
       console.log('Головоломка сложена! Поздравляю!');
-    }
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  controler(e) {
-    const controls = document.getElementsByClassName('controls')[0];
-    const shuffle = controls.querySelector('button.shuffle');
-    const upBtn = controls.querySelector('button.up');
-    const downBtn = controls.querySelector('button.down');
-    const leftBtn = controls.querySelector('button.left');
-    const rightBtn = controls.querySelector('button.right');
-
-    const code = e.keyCode;
-    const { target } = e;
-
-    const {
-      up, down, left, right,
-    } = this.direction;
-
-    switch (code) {
-      case 37: // 'left'
-        this.move(left);
-        break;
-      case 39: // 'right'
-        this.move(right);
-        break;
-      case 38: // 'up'
-        this.move(up);
-        break;
-      case 40: // 'down'
-        // console.log(this);
-        this.move(down);
-        break;
-      default:
-        break;
-    }
-
-    switch (target) {
-      case upBtn:
-        this.move(up);
-        break;
-      case downBtn:
-        this.move(down);
-        break;
-      case leftBtn:
-        this.move(left);
-        break;
-      case rightBtn:
-        this.move(right);
-        break;
-      case shuffle:
-        this.shuffle();
-        break;
-
-      default:
-        break;
+      this.board.classList.add('win');
     }
   }
 }

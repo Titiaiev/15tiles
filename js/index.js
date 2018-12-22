@@ -2,25 +2,29 @@
 import Board from './Board.js';
 
 window.onload = function onloadHandler() {
-  const boardNode = document.getElementsByClassName('board')[0];
-  const tiles = boardNode.getElementsByClassName('tile');
-
-  const board = new Board(tiles);
+  const board = new Board(document.querySelector('.board'));
   window.board = board;
 
-  const controls = document.getElementsByClassName('controls')[0];
-  // const shuffle = controls.querySelector('button.shuffle');
-  // const upBtn = controls.querySelector('button.up');
-  // const downBtn = controls.querySelector('button.down');
-  // const leftBtn = controls.querySelector('button.left');
-  // const rightBtn = controls.querySelector('button.right');
-
-  controls.addEventListener('click', (e) => {
-    // console.log(e);
-    board.controler.call(board, e);
-  }, false);
-
   window.addEventListener('keydown', (e) => {
-    board.controler.call(board, e);
+    // board.controler.call(board, e);
+    const code = e.keyCode;
+
+    switch (code) {
+      case 37: // 'left'
+        board.move.call(board, 'left');
+        break;
+      case 39: // 'right'
+        board.move.call(board, 'right');
+        break;
+      case 38: // 'up'
+        board.move.call(board, 'up');
+        break;
+      case 40: // 'down'
+        // console.log(board);
+        board.move.call(board, 'down');
+        break;
+      default:
+        break;
+    }
   }, false);
 };
