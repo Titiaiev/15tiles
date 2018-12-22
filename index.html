@@ -5,47 +5,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>15 Tiles</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
   <link rel="stylesheet" href="css/style.css">
   <script type="module" src="js/index.js"></script>
   <script nomodule src="js/nomodule.js"></script>
 </head>
 <body>
   <div class="app">
-
-    <div class="board">
-
-      <div class="tile" unselectable="on">1</div>
-      <div class="tile" unselectable="on">2</div>
-      <div class="tile" unselectable="on">3</div>
-      <div class="tile" unselectable="on">4</div>
-      <div class="tile" unselectable="on">5</div>
-      <div class="tile" unselectable="on">6</div>
-      <div class="tile" unselectable="on">7</div>
-      <div class="tile" unselectable="on">8</div>
-      <div class="tile" unselectable="on">9</div>
-      <div class="tile" unselectable="on">10</div>
-      <div class="tile" unselectable="on">11</div>
-      <div class="tile" unselectable="on">12</div>
-      <div class="tile" unselectable="on">13</div>
-      <div class="tile" unselectable="on">14</div>
-      <div class="tile" unselectable="on">15</div>
-      <div class="tile empty" unselectable="on"></div>
-
-    </div>
-
     <div class="controls">
 
-      <div class="move-btns">
-        <button class="move up">&uarr;</button>
-        <button class="move left">&larr;</button>
-        <button class="move right">&rarr;</button>
-        <button class="move down">&darr;</button>
-      </div>
+      <button class="shuffle"><i class="fas fa-sync-alt"></i></button>
+      <button class="timer-start"><i class="fas fa-hourglass-start"></i></button>
+      <!-- <button class="timer-end"><i class="fas fa-hourglass-end"></i></button> -->
+      <!-- <button class="sound-on"><i class="fas fa-volume-up"></i></button> -->
+      <button class="sound-of"><i class="fas fa-volume-mute"></i></button>
+      <button class="quastions"><i class="far fa-question-circle"></i></button>
+      <a href="https://github.com/Titiaiev/15tiles" target="_blank" class="github"><i class="fab fa-github"></i></a>
 
-      <div class="shuffle">
-        <button class="shuffle">перемешать</button>
-      </div>
-
+    </div>
+    <div class="board-container">
+        <table class="board">
+            <tr>
+              <td><div class="tile" unselectable="on">1</div></td>
+              <td><div class="tile" unselectable="on">2</div></td>
+              <td><div class="tile" unselectable="on">3</div></td>
+              <td><div class="tile" unselectable="on">4</div></td>
+            </tr>
+            <tr>
+              <td><div class="tile" unselectable="on">5</div></td>
+              <td><div class="tile" unselectable="on">6</div></td>
+              <td><div class="tile" unselectable="on">7</div></td>
+              <td><div class="tile" unselectable="on">8</div></td>
+            </tr>
+            <tr>
+              <td><div class="tile" unselectable="on">9</div></td>
+              <td><div class="tile" unselectable="on">10</div></td>
+              <td><div class="tile" unselectable="on">11</div></td>
+              <td><div class="tile" unselectable="on">12</div></td>
+            </tr>
+            <tr>
+              <td><div class="tile" unselectable="on">13</div></td>
+              <td><div class="tile" unselectable="on">14</div></td>
+              <td><div class="tile" unselectable="on">15</div></td>
+              <td><div class="tile empty" unselectable="on"></div></td>
+            </tr>
+          </table>
     </div>
 
   </div>

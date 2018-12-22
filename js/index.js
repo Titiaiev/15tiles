@@ -1,9 +1,15 @@
 /* eslint-disable import/extensions */
-import Board from './Board.js';
+import Game from './Game.js';
 
 window.onload = function onloadHandler() {
-  const board = new Board(document.querySelector('.board'));
-  window.board = board;
+  const game = new Game(document.querySelector('table.board'));
+  window.game = game;
+
+  // const btns = document.getElementsByTagName('button');
+
+  document.getElementsByClassName('shuffle')[0].addEventListener('click', () => {
+    game.shuffle();
+  }, false);
 
   window.addEventListener('keydown', (e) => {
     // board.controler.call(board, e);
@@ -11,17 +17,17 @@ window.onload = function onloadHandler() {
 
     switch (code) {
       case 37: // 'left'
-        board.move.call(board, 'left');
+        game.move.call(game, 'left');
         break;
       case 39: // 'right'
-        board.move.call(board, 'right');
+        game.move.call(game, 'right');
         break;
       case 38: // 'up'
-        board.move.call(board, 'up');
+        game.move.call(game, 'up');
         break;
       case 40: // 'down'
         // console.log(board);
-        board.move.call(board, 'down');
+        game.move.call(game, 'down');
         break;
       default:
         break;

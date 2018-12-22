@@ -1,136 +1,50 @@
-/* eslint-disable import/extensions */
-import Tile from './Tile.js';
-import EmptyField from './EmptyField.js';
-import PositionGenerator from './PositionGenerator.js';
-
 class Board {
-  constructor(board) {
-    this.board = board;
-    this.sideLength = 4;
-    this.fields = [];
-    this.emptyField = 15;
-
-    this.direction = {
-      up: { offset: 4, check(i) { return i < 16; } },
-      down: { offset: -4, check(i) { return i >= 0; } },
-      left: { offset: 1, check(i) { return i < 16 && (i !== 12 && i !== 8 && i !== 4); } },
-      right: { offset: -1, check(i) { return i >= 0 && (i !== 11 && i !== 7 && i !== 3); } },
-    };
-    this.init();
+  constructor(parent) {
+    // eslint-disable-next-line no-use-before-define
+    const { matrix, table } = createTable(4);
+    this.parent = parent;
+    this.matrix = matrix;
+    this.table = table;
   }
 
-  init() {
-    this.fields = [];
-    this.emptyField = 15;
+  update(tiles) {
+    if (tiles instanceof Array) {
+      tiles.forEach((tile) => {
+        if (
+          typeof tile.position.x !== 'undefined'
+          && typeof tile.position.y !== 'undefined'
+        ) {
+          const { x, y } = tile.position;
+          this.matrix[y][x].innerHTML = '';
+          this.matrix[y][x].appendChild(tile.el);
+        } else throw new RangeError('аргумент должен иметь свойства "position.x & position.y"');
+      });
 
-    const getUniqRandom = function getUniqRandom(max) {
-      const uniqs = [];
-
-      const random = _max => Math.floor(1 + Math.random() * (_max));
-      let i = random(max);
-
-      while (uniqs.length < (max)) {
-        while (uniqs.includes(i)) {
-          i = random(max);
-        }
-        uniqs.push(i);
-        // getUniqRandom(max);
-      }
-      return uniqs;
-    };
-
-    const orders = getUniqRandom(15);
-    const posgen = new PositionGenerator(3);
-    window.posgen = posgen;
-
-    for (let i = 0; i < 15; i += 1) {
-      const pos = posgen.next();
-      // console.log(pos);
-      const tile = new Tile(orders[i], pos);
-      // console.log(tile);
-      this.fields.push(tile);
-    }
-    this.fields.push(new EmptyField(posgen.next()));
-    // console.log(this.fields);
-
-
-    if (!this.solvable(this.fields)) {
-      // console.log('solvabled');
-      this.swap(0, 1);
-    }
-
-    this.render();
-  }
-
-  shuffle() {
-    this.init();
-  }
-
-  swap(i1, i2) {
-    const i1pos = this.fields[i1].position;
-    const i2pos = this.fields[i2].position;
-    this.fields[i1].position = i2pos;
-    this.fields[i2].position = i1pos;
-
-    const t = this.fields[i1];
-    this.fields[i1] = this.fields[i2];
-    this.fields[i2] = t;
-  }
-
-  get isCompleted() {
-    return !this.fields.some((item, i) => {
-      if (item) {
-        return item.id > 0 && item.id - 1 !== i;
-      }
-    });
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  solvable(a) {
-    // eslint-disable-next-line no-var
-    var kDisorder;
-    let i;
-    let len;
-    for (kDisorder = 0, i = 1, len = a.length - 1; i < len; i += 1) {
-      // eslint-disable-next-line no-plusplus
-      for (let j = i - 1; j >= 0; j--) { if (a[j].id > a[i].id) kDisorder++; }
-    }
-    // eslint-disable-next-line block-scoped-var
-    return !(kDisorder % 2);
-  }
-
-  move(direction) {
-    // console.log(this);
-    if (
-      direction === 'up'
-      || direction === 'down'
-      || direction === 'left'
-      || direction === 'right'
-    ) {
-      const { offset, check } = this.direction[direction];
-      const newPosition = this.emptyField + offset;
-
-      if (check(newPosition)) {
-        this.swap(this.emptyField, newPosition);
-        this.emptyField = newPosition;
-      }
-
-      this.render();
-    } else throw new RangeError('Недопустимый аргумент! Метод принимает только: up, down, left, right.');
-  }
-
-  render() {
-    const { board } = this;
-    board.innerHTML = '';
-    this.fields.forEach((f) => {
-      board.appendChild(f.el);
-    });
-
-    if (this.isCompleted) {
-      console.log('Головоломка сложена! Поздравляю!');
-      this.board.classList.add('win');
+      this.parent.appendChild(this.table);
     }
   }
+}
+
+function createTable(sideSize = 4) {
+  const matrix = [];
+  const table = document.createDocumentFragment();
+
+  for (let i = 0; i < sideSize; i += 1) {
+    const row = document.createElement('tr');
+    matrix[i] = row;
+    table.appendChild(row);
+
+    for (let j = 0; j < sideSize; j += 1) {
+      const col = document.createElement('td');
+      matrix[i][j] = col;
+      row.appendChild(col);
+    }
+  }
+
+  return {
+    matrix,
+    table,
+  };
 }
 
 export default Board;

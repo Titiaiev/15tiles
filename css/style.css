@@ -21,8 +21,9 @@ body {
 .app {
   /* border: 1px solid black; */
   /* margin: 50px auto; */
-  /* width: 500px; */
+  width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
   flex-wrap: wrap;
   align-items: center;
@@ -31,41 +32,37 @@ body {
   /* margin: auto; */
 }
 
-.board {
+.board-container {
   border-radius: 10px;
-  background-color: #c05050;
-  border: 7px solid #c05050;
-  box-shadow: -1px -1px 5px rgba(0, 0, 0, 0.3) inset, 1px 1px 5px rgb(0, 0, 0, 0.3) inset;
-  width: 500px;
-  height: 500px;
-  /* height: auto; */
+  background-color: #e0426a94;
+  border: 7px solid #e0426a94;
+  box-shadow: -1px -1px 5px rgba(109, 109, 109, 0.3) inset, 1px 1px 5px rgb(0, 0, 0, 0.3) inset;
   padding: 3px;
-  font-size: 0;
-  margin-left: 20px;
 }
 
-.board.win {
-  background-color: #7250c0;
-  border-color: #7250c0;
+.board-container.win {
+  /* background-color: #e0426a94; */
+  /* border-color: #7250c0; */
 }
 
-.controls {
-  /* width: 100%; */
-  /* margin: 0 auto; */
-  padding: 20px;
-  display: none;
+.controls { 
+  /* display: none; */
+  padding: 40px 20px;
+}
+
+.board {
+  border-collapse: collapse;
 }
 
 
 .tile {
   background-color: #fffef9;
-  width: calc(25% - 2px);
-  height: calc(25% - 2px);
+  width: 120px;
+  height: 120px;
   display: inline-block;
   border: 5px solid #fffef9;
   border-radius: 10px;
   margin: 1px;
-  /* padding-top: auto; */
   text-align: center;
   font-size: 4.5rem;
   line-height: 2.35;
@@ -82,16 +79,52 @@ body {
   vertical-align: bottom;
 }
 
+@media (max-width: 350px), (max-height: 350px) {
+  .board-container {
+    border-radius: 10px;
+    border-width: 4px;
+    padding: 3px;
+    margin: auto;
+    border-width: 4px;
+    padding: 1px;
+  }
 
-.app button {
-  padding: 10px 5px;
-  font-size: 20px;
-  color: #c05050;
-  border: 2px solid #c05050;
+  .tile {
+    width: 60px;
+    height: 60px;
+    font-size: 2.6rem;
+    line-height: 2.2;
+    border-width: 2px;
+    box-shadow: -1px -1px 1px rgba(153, 152, 152, .3) inset, 1px 1px 1px rgba(153, 152, 152, .6) inset;
+    /* box-shadow: none */
+  }
+}
+
+
+.app button,
+.app a {
+  /* padding: 10px 5px; */
+  border-radius: 50%;
+  /* font-size: 40px; */
+  color: #5bad84af;
+  border: 2px solid transparent;
   cursor: pointer;
   background-color: transparent;
 }
 
+button > i,
+a > i {
+  font-size: 40px;
+  /* display: none; */
+}
+
+.app button:hover,
+.app a:hover {
+  color: #5bad84ce;
+}
+
+
+/* дальше мусор который нужно выпилить */
 .move-btns {
   display: flex;
   justify-content: flex-end;
@@ -105,9 +138,7 @@ body {
   margin-left: 7px;
 }
 
-.shuffle {
-  display: none;
-}
+
 
 #joystick {
   position: relative;
@@ -151,35 +182,3 @@ body {
               0px -7px 0px rgb(255, 255, 255);
   /* z-index: 2000; */
 }
-
-@media (max-width: 350px), (max-height: 350px) {
-  .board {
-    border-radius: 10px;
-    border: 4px solid #c05050;
-    width: 290px;
-    height: 290px;
-    padding: 3px;
-    /* margin-left: 20px; */
-    margin: auto;
-    border-width: 4px;
-    padding: 1px;
-  }
-  
-  .controls {
-    padding: 20px;
-    display: none;
-  }
-
-  .tile {
-    font-size: 2.8rem;
-    line-height: 2.3;
-    border-width: 2px;
-    box-shadow: -1px -1px 1px rgba(153, 152, 152, .3) inset, 1px 1px 1px rgba(153, 152, 152, .6) inset;
-    /* box-shadow: none */
-  }
-
-  .app {
-    flex-direction: row;
-  }
-}
-
