@@ -38,7 +38,7 @@ class Game {
           i = random(max);
         }
         uniqs.push(i);
-        // getUniqRandom(max);
+      // getUniqRandom(max);
       }
       return uniqs;
     };
@@ -60,7 +60,7 @@ class Game {
 
 
     if (!this.solvable(this.fields)) {
-      // console.log('solvabled');
+    // console.log('solvabled');
       this.swap(0, 1);
     }
 
@@ -88,12 +88,12 @@ class Game {
 
   // eslint-disable-next-line class-methods-use-this
   solvable(a) {
-    // eslint-disable-next-line no-var
+  // eslint-disable-next-line no-var
     var kDisorder;
     let i;
     let len;
     for (kDisorder = 0, i = 1, len = a.length - 1; i < len; i += 1) {
-      // eslint-disable-next-line no-plusplus
+    // eslint-disable-next-line no-plusplus
       for (let j = i - 1; j >= 0; j--) { if (a[j].id > a[i].id) kDisorder++; }
     }
     // eslint-disable-next-line block-scoped-var
@@ -101,7 +101,7 @@ class Game {
   }
 
   move(direction) {
-    // console.log(this);
+  // console.log(this);
     if (
       direction === 'up'
       || direction === 'down'
@@ -126,7 +126,7 @@ class Game {
 
     if (this.isCompleted) {
       console.log('Головоломка сложена! Поздравляю!');
-      // this.board.classList.add('win');
+    // this.board.classList.add('win');
     }
   }
 }
