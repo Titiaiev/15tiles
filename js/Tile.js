@@ -1,26 +1,18 @@
+const _game = Symbol('_game');
+
 class Tile {
-  constructor(id, { x, y }) {
-    const screen = {
-      width: document.documentElement.clientWidth,
-      height: document.documentElement.clientHeight,
-      getMinSide() {
-        return Math.min(this.height, this.width);
-      },
-    };
-
-    const tileSize = screen.getMinSide() / 5;
-
+  constructor(id, { x, y }, game) {
     const el = document.createElement('div');
     el.classList.add('tile');
     el.setAttribute('unselectable', 'on');
     el.textContent = id;
-    el.style.width = `${tileSize}px`;
-    el.style.height = `${tileSize}px`;
-    el.style.fontSize = `${tileSize / 3}px`;
 
+    // eslint-disable-next-line no-use-before-define
     el.addEventListener('click', clickOrTouchHandle.bind(this), false);
+    // eslint-disable-next-line no-use-before-define
     el.addEventListener('touchend', clickOrTouchHandle.bind(this), false);
 
+    this[_game] = game;
     this.el = el;
     this.id = id;
     this.position = {
@@ -31,15 +23,17 @@ class Tile {
 }
 
 function clickOrTouchHandle(e) {
+  const { empty, move } = this[_game];
+
   e.stopPropagation();
   e.preventDefault();
-  const _x = this.position.x - game.empty.position.x;
-  const _y = this.position.y - game.empty.position.y;
-  // console.log(`x === ${_x} && y === ${_y}`);
-  if (_x === -1 && _y === 0) game.move('right');
-  else if (_x === 1 && _y === 0) game.move('left');
-  else if (_x === 0 && _y === -1) game.move('down');
-  else if (_x === 0 && _y === 1) game.move('up');
+  const deltaX = this.position.x - empty.position.x;
+  const deltaY = this.position.y - empty.position.y;
+  // console.log(`x === ${deltaX} && y === ${deltaY}`);
+  if (deltaX === -1 && deltaY === 0) move.call(this[_game], 'right');
+  else if (deltaX === 1 && deltaY === 0) move.call(this[_game], 'left');
+  else if (deltaX === 0 && deltaY === -1) move.call(this[_game], 'down');
+  else if (deltaX === 0 && deltaY === 1) move.call(this[_game], 'up');
   // console.log(e);
 }
 

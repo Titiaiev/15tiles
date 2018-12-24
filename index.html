@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" manifest="tiles.appcache">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>15 Tiles</title>
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+  <!-- <link rel="stylesheet" href="css/all.css"> -->
+  <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous"> -->
   <link rel="stylesheet" href="css/style.css">
   <script type="module" src="js/index.js"></script>
   <script nomodule src="js/nomodule.js"></script>
@@ -14,13 +16,13 @@
   <div class="app">
     <div class="controls">
 
-      <button class="shuffle"><i class="fas fa-sync-alt"></i></button>
+      <button class="shuffle control"><i class="fas fa-sync-alt"></i>перемешать</button>
       <!-- <button class="timer-start"><i class="fas fa-hourglass-start"></i></button> -->
       <!-- <button class="timer-end"><i class="fas fa-hourglass-end"></i></button> -->
       <!-- <button class="sound-on"><i class="fas fa-volume-up"></i></button> -->
       <!-- <button class="sound-of"><i class="fas fa-volume-mute"></i></button> -->
-      <button class="quastions"><i class="far fa-question-circle"></i></button>
-      <a href="https://github.com/Titiaiev/15tiles" target="_blank" class="github"><i class="fab fa-github"></i></a>
+      <button class="quastions control"><i class="fas fa-question-circle"></i>информация</button>
+      <a href="https://github.com/Titiaiev/15tiles" target="_blank" class="github control"><i class="fab fa-github"></i>код на GitHub</a>
 
     </div>
     <div class="board-container">
@@ -50,6 +52,28 @@
               <td><div class="tile empty" unselectable="on"></div></td>
             </tr>
           </table>
+    </div>
+
+    <div class="info hidden">
+      <div class="wrapper">
+
+        <button class="close-btn">x</button>
+        <h2>Ваши результаты.</h2>
+        <h3>Текущая игра.</h3>
+        <p class="current">Время игры: <span class="time">0 секунд</span>, количество ходов: <span class="steps">0</span></p>
+        <h3>Ваш рекорд.</h3>
+        <p class="record">Время игры: <span class="time">0 секунд</span>, количество ходов: <span class="steps">0</span></p>
+        <h2>Управление.</h2>
+        <p>Перемещать плитки можно тремя способами:</p>
+        <ol>
+          <li>кликая мышкой на плитку, которую хотите передвинуть</li>
+          <li>на сенсорных экранах, троньте пальцем нужную вам плитку</li>
+          <li>используя клавиши со стрелками (&#8592 / &#8593 / &#8594 / &#8595) на клавиатуре</li>
+        </ol>
+        <!-- <hr> -->
+        <h2>Об игре.</h2>
+        <p>Информацию об истории игры "Пятнашки" можно почитать на <a href="https://ru.wikipedia.org/wiki/%D0%98%D0%B3%D1%80%D0%B0_%D0%B2_15" target="_blank" rel="noopener noreferrer">WiKi.</a></p>
+      </div>
     </div>
 
   </div>

@@ -1,76 +1,101 @@
+@import 'info.css';
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-size: 10px;
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
-   -khtml-user-select: none; /* Konqueror HTML */
-     -moz-user-select: none; /* Firefox */
-      -ms-user-select: none; /* Internet Explorer/Edge */
-          user-select: none;
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none;
 }
 
 body { 
   font-family: sans-serif;
-  /* overflow-y: hidden; */
+  font-size: 10px;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .app {
-  /* border: 1px solid black; */
-  /* margin: 50px auto; */
+  border: 1px solip transparent;
+  max-width: 1000px;
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  flex-wrap: wrap;
+  /* justify-content: space-around; */
+  flex-wrap: nowrap;
   align-items: center;
-  align-content: center;
+  /* align-content: center; */
   height: 100vh;
-  /* margin: auto; */
+  margin: auto;
 }
 
 .board-container {
   border-radius: 10px;
-  background-color: #e0426a94;
-  border: 7px solid #e0426a94;
-  box-shadow: -1px -1px 5px rgba(109, 109, 109, 0.3) inset, 1px 1px 5px rgb(0, 0, 0, 0.3) inset;
+  background-color: rgba(224, 66, 106, 0.58);
+  border: 7px solid rgba(224, 66, 106, 0.58);
+  box-shadow: -1px -1px 5px rgba(109, 109, 109, 0.3) inset, 1px 1px 5px rgba(109, 109, 109, 0.3) inset;
   padding: 3px;
 }
 
 .board-container.win {
-  /* background-color: #e0426a94; */
-  /* border-color: #7250c0; */
+  background-color: #7250c0;
+  border-color: #7250c0;
 }
 
 .controls { 
-  /* display: none; */
-  padding: 40px 20px;
+  width: 50%;
+  padding: 20px 20px 80px 20px;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+}
+
+.controls button,
+.controls a {
+  margin-top: 25px;
+  border-radius: 50%;
+  color: rgba(91, 173, 132, 0.7);
+  border: 2px solid transparent;
+  cursor: pointer;
+  background-color: transparent;
+  font-size: 20px;
+  outline: none;
+}
+
+.controls a {
+  text-align: center;
+}
+
+.controls button:hover,
+.controls a:hover {
+  color: rgba(91, 173, 132, 0.9);
+}
+
+.controls.control {
+  margin: auto;
 }
 
 .board {
   border-collapse: collapse;
-  /* vertical-align: center; */
 }
 
 
 .tile {
   background-color: #fffef9;
-  width: 120px;
-  height: 120px;
+  width: 22vmin;
+  height: 22vmin;
   display: flex;
   border: 5px solid #fffef9;
   border-radius: 10px;
   margin: 1px;
   text-align: center;
-  /* font-size: 100%; */
-  font-size: 4.5rem;
-  /* line-height: 2.35; */
-  /* vertical-align: center; */
-  color: #c05050;
-  box-shadow: -1px -1px 3px rgba(153, 152, 152, .3) inset, 1px 1px 5px rgba(153, 152, 152, .6) inset;
+  font-size: 8vmin;
+  color: rgba(224, 66, 106, 0.8);
+  box-shadow: -1px -1px 3px rgba(153, 152, 152, .3) inset, 1px 1px 3px rgba(153, 152, 152, .3) inset;
   /* align-content: center; */
   justify-content: center;
   align-items: center;
@@ -96,95 +121,35 @@ body {
   }
 
   .tile {
-    /* width: 60px; */
-    /* height: 60px; */
-    /* font-size: 2.6rem; */
-    line-height: 2.2;
     border-width: 2px;
     box-shadow: -1px -1px 1px rgba(153, 152, 152, .3) inset, 1px 1px 1px rgba(153, 152, 152, .6) inset;
-    /* box-shadow: none */
+    border-radius: 5px;
   }
-} 
-
-
-.app button,
-.app a {
-  /* padding: 10px 5px; */
-  border-radius: 50%;
-  /* font-size: 40px; */
-  color: #5bad84af;
-  border: 2px solid transparent;
-  cursor: pointer;
-  background-color: transparent;
 }
 
-button > i,
-a > i {
-  font-size: 40px;
-  /* display: none; */
+@media (max-width: 350px) {
+  .controls button,
+  .controls a {
+    font-size: 15px;
+  }
 }
 
-.app button:hover,
-.app a:hover {
-  color: #5bad84ce;
+@media screen and (orientation: landscape) {
+  .app {
+    flex-direction: row;
+  }
 }
 
-
-/* дальше мусор который нужно выпилить */
-.move-btns {
-  display: flex;
-  justify-content: flex-end;
-  display: none;
+@media screen and (orientation: portrait) {
+  .tile {
+    width: 22vw;
+    height: 22vw;
+  }
 }
 
-.move-btns button {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  margin-left: 7px;
-}
-
-
-
-#joystick {
-  position: relative;
-  width: 200px;
-  height: 200px;
-  /* display: flex; */
-  margin: auto;
-  border-radius: 50%;
-  border: 2px solid #c05050;
-  overflow: hidden;
-}
-
-#joystick .arows {
-  width: 50%;
-  height: 50%;
-  transform: rotate(45deg);
-  /* border: 2px solid #c05050; */
-  position: relative;
-  top: 50%;
-  left: 50%;
-  margin: -25%;
-  background-color: #c050501a;
-  /* z-index: 1; */
-}
-
-.arows > div {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin: -45%;
-  /* margin: -50%; */
-  width: 90%;
-  height: 90%;
-  /* border: 15px solid rgba(0, 0, 0, 0.384) inset; */
-  /* outline: 2px solid #fffef9; */
-  border-radius: 50%;
-  background-color: #c05050;
-  box-shadow: 7px 0px 0px rgb(255, 255, 255),
-              -7px 0px 0px rgb(255, 255, 255),
-              0px 7px 0px rgb(255, 255, 255),
-              0px -7px 0px rgb(255, 255, 255);
-  /* z-index: 2000; */
+@media screen and (min-width: 1050px) {
+  .tile {
+    width: 18vmin;
+    height: 18vmin;
+  }
 }
