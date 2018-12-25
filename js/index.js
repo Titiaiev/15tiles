@@ -25,7 +25,7 @@ window.onload = function onloadHandler() {
   window.addEventListener('keydown', (e) => {
     const code = e.keyCode;
     // eslint-disable-next-line no-use-before-define
-    if (code === 27 && keysBlocked) { closeInfo(); }
+    if (code === 27 && keysBlocked) { closeInfo(); } // 'Esc'
 
     if (!keysBlocked) {
       switch (code) {
@@ -50,7 +50,7 @@ window.onload = function onloadHandler() {
   game.oncompleteDo = () => {
     clearInterval(timer);
     timer = null;
-    table.parentElement.classList.add('win');
+    table.parentElement.parentElement.classList.add('win');
   };
 
   function closeInfo() {
