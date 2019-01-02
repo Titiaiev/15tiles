@@ -39,9 +39,10 @@
   position: relative;
 }
 
-h2 + p,
-h3 + p {
-  margin-top: 20px;
+h2,
+h3 {
+  margin-top: 16px;
+  margin-bottom: 8px;
 }
 
 .current span,

@@ -90,7 +90,4 @@ window.onload = function onloadHandler() {
     app.gameCompleted = true;
     document.querySelector('.board-container').classList.add('win');
   };
-
-  // FIXME: когда закончу проект, убрать это глобальное свойство
-  window.game = app.game;
 };
