@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# 02.012.19 - 22:48
+# 02.012.19 - 22:49
 
 
 
@@ -8,6 +8,7 @@ CACHE:
 index.html
 css/style.css
 css/info.css
+css/win.css
 js/index.js
 js/Board.js
 js/PositionGenerator.js
