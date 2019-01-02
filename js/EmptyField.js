@@ -1,11 +1,22 @@
-/* eslint-disable import/extensions */
-import Tile from './Tile.js';
-
-class EmptyField extends Tile {
+/**
+ * Пустая ячейка.
+ *
+ * @class EmptyField
+ * @returns {HTMLDivElement} <div class="tile empty" unselectable="on"></div>
+ */
+class EmptyField {
   constructor({ x, y }) {
-    super(16, { x, y });
-    this.el.textContent = '';
-    this.el.classList.add('empty');
+    const el = document.createElement('div');
+    el.className = 'tile empty';
+    el.setAttribute('unselectable', 'on');
+    el.textContent = '';
+
+    this.el = el;
+    this.id = 16;
+    this.position = {
+      x,
+      y,
+    };
   }
 }
 
