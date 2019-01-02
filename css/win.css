@@ -1,0 +1,33 @@
+.win {
+  animation: win 0.8s ease-in infinite, shake 2s linear infinite;
+}
+
+@keyframes win{
+  0% {}
+  30% {
+    background-color: #50c0a8;
+    border-color: #7250c0;
+  }
+  60% {
+    background-color: #dfe076;
+    border-color: #309aa1;
+  }
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0px);
+  }
+  3% {
+    transform: translateX(-5px);
+  }
+  6% {
+    transform: translateX(0px);
+  }
+  9% {
+    transform: translateX(5px);
+  }
+  12% {
+    transform: translateX(0px);
+  }
+}

@@ -55,6 +55,7 @@ class Game {
     this.fields = [];
     this.emptyField = 15;
     this[_timeStart] = null;
+    this.gameTime = null;
     this[_steps] = 0;
 
     const orders = getUniqRandom(15);
@@ -116,6 +117,7 @@ class Game {
   }
 
   get time() {
+    if (this.gameTime) return this.gameTime;
     let delta = 0;
     let timer = '0 секунд';
     if (this[_timeStart]) {
@@ -225,19 +227,20 @@ class Game {
     this.board.update(fields);
     if (this[_isCompleted]) {
       console.log('Головоломка сложена! Поздравляю!');
+      this.gameTime = this.time;
 
       try { // Edge бросает ошибку если открыть игру по протоколу file:// (запустить игру из проводника)
-        const _recorded = localStorage.getItem('game-best-result');
-        const recorded = JSON.parse(_recorded);
+        const recorded = JSON.parse(localStorage.getItem('game-best-result'));
         const now = {
           time: this.time,
           steps: this.steps,
         };
 
-        if (_recorded) {
-          now.time = (now.time.split(' ')[0] < recorded.time.split(' ')[0]) ? now.time : recorded.time;
-          now.steps = (now.steps < recorded.steps) ? now.steps : recorded.steps;
+        if (recorded) {
+          now.time = (Number(now.time.split(' ')[0]) < Number(recorded.time.split(' ')[0])) ? now.time : recorded.time;
+          now.steps = (Number(now.steps) < Number(recorded.steps)) ? now.steps : recorded.steps;
         }
+        console.log(now);
         localStorage.setItem('game-best-result', JSON.stringify(now));
 
         if (this.oncompleteDo) this.oncompleteDo();

@@ -1,4 +1,5 @@
 @import 'info.css';
+@import 'win.css';
 
 * {
   box-sizing: border-box;
@@ -41,10 +42,6 @@ body {
   padding: 3px;
 }
 
-.board-container.win {
-  background-color: #7250c0;
-  border-color: #7250c0;
-}
 
 .controls { 
   width: 50%;
