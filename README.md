@@ -1,6 +1,6 @@
 # Игра "Пятнашки"
 
-Можно играть офлайн, так как приложение использует appcache
+Можно играть оффлайн, так как приложение использует appcache
 
 ## Демо
 [https://titiaiev.github.io/15tiles/](https://titiaiev.github.io/15tiles/)
