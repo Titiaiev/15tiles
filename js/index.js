@@ -16,6 +16,7 @@ window.onload = function onloadHandler() {
     // Нужен чтоб отключить клавиатуру когда открыта вкладка "информация"
     keysBlocked: false,
     game,
+    gameCompleted: false,
 
     openInfo() {
       // Edge бросает ошибку если открыть игру по протоколу file:// (запустить игру из проводника)
@@ -37,7 +38,7 @@ window.onload = function onloadHandler() {
 
         app.toggle();
         currentTime.textContent = app.game.time;
-        if (!app.timer) {
+        if (!app.timer && !app.gameCompleted) {
           app.timer = setInterval(() => {
             currentTime.textContent = app.game.time;
           }, 1000);
@@ -86,7 +87,8 @@ window.onload = function onloadHandler() {
   game.oncompleteDo = () => {
     clearInterval(app.timer);
     app.timer = null;
-    document.querySelector('board-container').classList.add('win');
+    app.gameCompleted = true;
+    document.querySelector('.board-container').classList.add('win');
   };
 
   // FIXME: когда закончу проект, убрать это глобальное свойство
