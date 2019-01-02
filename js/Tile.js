@@ -1,7 +1,18 @@
-const _game = Symbol('_game');
+// eslint-disable-next-line import/extensions
+import EventEmitter from './EventEmitter.js';
 
-class Tile {
-  constructor(id, { x, y }, game) {
+/**
+ * Представляет плитку, которая имеет номер от 1 до 15
+ *
+ * @class Tile
+ * @extends {EventEmitter}
+ * @param {number} id
+ * @param {object} { x: [0 - 3], y: [0 - 3] }
+ * @returns {HTMLDivElement} <div class="tile" unselectable="on">[ 0 -- 15 ]</div>
+ */
+class Tile extends EventEmitter {
+  constructor(id, { x, y }) {
+    super();
     const el = document.createElement('div');
     el.classList.add('tile');
     el.setAttribute('unselectable', 'on');
@@ -12,7 +23,6 @@ class Tile {
     // eslint-disable-next-line no-use-before-define
     el.addEventListener('touchend', clickOrTouchHandle.bind(this), false);
 
-    this[_game] = game;
     this.el = el;
     this.id = id;
     this.position = {
@@ -23,18 +33,9 @@ class Tile {
 }
 
 function clickOrTouchHandle(e) {
-  const { empty, move } = this[_game];
-
   e.stopPropagation();
   e.preventDefault();
-  const deltaX = this.position.x - empty.position.x;
-  const deltaY = this.position.y - empty.position.y;
-  // console.log(`x === ${deltaX} && y === ${deltaY}`);
-  if (deltaX === -1 && deltaY === 0) move.call(this[_game], 'right');
-  else if (deltaX === 1 && deltaY === 0) move.call(this[_game], 'left');
-  else if (deltaX === 0 && deltaY === -1) move.call(this[_game], 'down');
-  else if (deltaX === 0 && deltaY === 1) move.call(this[_game], 'up');
-  // console.log(e);
+  this.emit('trymove', this); // эмитирование события - "попытка передвинуть плитку"
 }
 
 export default Tile;

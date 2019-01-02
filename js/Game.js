@@ -4,7 +4,18 @@ import EmptyField from './EmptyField.js';
 import PositionGenerator from './PositionGenerator.js';
 import Board from './Board.js';
 
-const cb = new WeakMap();
+const _cb = new WeakMap();
+
+// ключи для скрытых полей
+const _init = Symbol('init');
+const _move = Symbol('move');
+const _update = Symbol('update');
+const _solvable = Symbol('solvable');
+const _swap = Symbol('swap');
+const _isCompleted = Symbol('isCompleted');
+const _tileMoveHandle = Symbol('tileMoveHandle');
+const _steps = Symbol('steps');
+const _timeStart = Symbol('timeStart');
 
 const _direction = {
   up: { offset: 4, check(i) { return i < 16; } },
@@ -13,41 +24,38 @@ const _direction = {
   right: { offset: -1, check(i) { return i >= 0 && (i !== 11 && i !== 7 && i !== 3); } },
 };
 
+const getUniqRandom = function getUniqRandom(max) {
+  const uniqs = [];
+
+  const random = _max => Math.floor(1 + Math.random() * (_max));
+  let i = random(max);
+
+  while (uniqs.length < (max)) {
+    while (uniqs.includes(i)) {
+      i = random(max);
+    }
+    uniqs.push(i);
+  // getUniqRandom(max);
+  }
+  return uniqs;
+};
+
 class Game {
   constructor(table) {
+    _cb.set(this, null);
     this.board = new Board(table);
+    this.empty = null;
     // eslint-disable-next-line no-param-reassign
     table.innerHTML = '';
-    cb.set(this, null);
 
-    this.fields = [];
-    this.emptyField = 15;
-    this.empty = null;
-
-    this.init();
+    this[_init]();
   }
 
-  init() {
+  [_init]() {
     this.fields = [];
     this.emptyField = 15;
-    this._timeStart = null;
-    this._steps = 0;
-
-    const getUniqRandom = function getUniqRandom(max) {
-      const uniqs = [];
-
-      const random = _max => Math.floor(1 + Math.random() * (_max));
-      let i = random(max);
-
-      while (uniqs.length < (max)) {
-        while (uniqs.includes(i)) {
-          i = random(max);
-        }
-        uniqs.push(i);
-      // getUniqRandom(max);
-      }
-      return uniqs;
-    };
+    this[_timeStart] = null;
+    this[_steps] = 0;
 
     const orders = getUniqRandom(15);
     const posgen = new PositionGenerator(3);
@@ -56,8 +64,11 @@ class Game {
     for (let i = 0; i < 15; i += 1) {
       const pos = posgen.next();
       // console.log(pos);
-      const tile = new Tile(orders[i], pos, this);
+
+      const tile = new Tile(orders[i], pos);
+      tile.on('trymove', this[_tileMoveHandle].bind(this));
       // console.log(tile);
+
       this.fields.push(tile);
     }
     this.empty = new EmptyField(posgen.next());
@@ -65,19 +76,25 @@ class Game {
     // console.log(this.fields);
 
 
-    if (!this.solvable(this.fields)) {
-    // console.log('solvabled');
-      this.swap(0, 1);
+    if (!this[_solvable](this.fields)) {
+    // console.log('_solvabled');
+      this[_swap](0, 1);
     }
 
-    this.render();
+    this[_update]();
   }
 
+  /**
+ * Перемешать плитки и начать заново
+ *
+ * @memberof Game
+ */
   shuffle() {
-    this.init();
+    this[_init]();
   }
 
-  swap(i1, i2) {
+  // поменять местами две плитки
+  [_swap](i1, i2) {
     const i1pos = this.fields[i1].position;
     const i2pos = this.fields[i2].position;
     this.fields[i1].position = i2pos;
@@ -88,39 +105,46 @@ class Game {
     this.fields[i2] = t;
   }
 
-  get isCompleted() {
+  /**
+ * Проверить "собралась" ли игра
+ *
+ * @readonly
+ * @memberof Game
+ */
+  get [_isCompleted]() {
     return !this.fields.some((item, i) => item.id > 0 && item.id - 1 !== i);
   }
 
   get time() {
     let delta = 0;
     let timer = '0 секунд';
-    if (this._timeStart) {
-      delta = (Date.now() - this._timeStart);
+    if (this[_timeStart]) {
+      delta = (Date.now() - this[_timeStart]);
       timer = `${(delta / 1000).toFixed(0)} секунд`;
     }
     return timer;
   }
 
   get steps() {
-    return this._steps;
+    return this[_steps];
   }
 
-  // eslint-disable-next-line class-methods-use-this
+
   get oncompleteDo() {
-    return cb.get(this);
+    return _cb.get(this);
   }
 
   set oncompleteDo(fn) {
     if (typeof fn === 'function') {
-      cb.set(this, fn);
+      _cb.set(this, fn);
     }
 
-    return cb.get(this);
+    return _cb.get(this);
   }
 
+  // проверить собирётся ли игра
   // eslint-disable-next-line class-methods-use-this
-  solvable(a) {
+  [_solvable](a) {
   // eslint-disable-next-line no-var
     var kDisorder;
     let i;
@@ -133,7 +157,21 @@ class Game {
     return !(kDisorder % 2);
   }
 
-  move(direction) {
+  // проверить может ли двигаться плитка,
+  // если да, то куда. Инициировать перемещение плитки
+  [_tileMoveHandle](tile) {
+    const { x, y } = tile.position;
+    const deltaX = x - this.empty.position.x;
+    const deltaY = y - this.empty.position.y;
+    // console.log(`x === ${deltaX} && y === ${deltaY}`);
+    if (deltaX === -1 && deltaY === 0) this[_move]('right');
+    else if (deltaX === 1 && deltaY === 0) this[_move]('left');
+    else if (deltaX === 0 && deltaY === -1) this[_move]('down');
+    else if (deltaX === 0 && deltaY === 1) this[_move]('up');
+  }
+
+  // сдвинуть плитки
+  [_move](direction) {
   // console.log(this);
     if (
       direction === 'up'
@@ -145,36 +183,67 @@ class Game {
       const newPosition = this.emptyField + offset;
 
       if (check(newPosition)) {
-        this.swap(this.emptyField, newPosition);
+        this[_swap](this.emptyField, newPosition);
         this.emptyField = newPosition;
       }
 
-      if (!this._timeStart) this._timeStart = Date.now();
-      this._steps += 1;
-      this.render();
+      if (!this[_timeStart]) this[_timeStart] = Date.now();
+      this[_steps] += 1;
+      this[_update]();
     } else throw new RangeError('Недопустимый аргумент! Метод принимает только: up, down, left, right.');
   }
 
-  render() {
+  /**
+ * Обработать ход, в зависимости от переданного кода
+ *
+ * код от 37 до 40 (включительно)
+ *
+ * @param {number} trigger
+ * @memberof Game
+ */
+  trigger(trigger) {
+    switch (trigger) {
+      case 37: // 'left'
+        this[_move]('left');
+        break;
+      case 39: // 'right'
+        this[_move]('right');
+        break;
+      case 38: // 'up'
+        this[_move]('up');
+        break;
+      case 40: // 'down'
+        this[_move]('down');
+        break;
+      default:
+        break;
+    }
+  }
+
+  [_update]() {
     const { fields } = this;
     this.board.update(fields);
-    if (this.isCompleted) {
+    if (this[_isCompleted]) {
       console.log('Головоломка сложена! Поздравляю!');
 
-      const _recorded = localStorage.getItem('game-best-result');
-      const recorded = JSON.parse(_recorded);
-      const now = {
-        time: this.time,
-        steps: this.steps,
-      };
+      try { // Edge бросает ошибку если открыть игру по протоколу file:// (запустить игру из проводника)
+        const _recorded = localStorage.getItem('game-best-result');
+        const recorded = JSON.parse(_recorded);
+        const now = {
+          time: this.time,
+          steps: this.steps,
+        };
 
-      if (_recorded) {
-        now.time = (now.time.split(' ')[0] < recorded.time.split(' ')[0]) ? now.time : recorded.time;
-        now.steps = (now.steps < recorded.steps) ? now.steps : recorded.steps;
+        if (_recorded) {
+          now.time = (now.time.split(' ')[0] < recorded.time.split(' ')[0]) ? now.time : recorded.time;
+          now.steps = (now.steps < recorded.steps) ? now.steps : recorded.steps;
+        }
+        localStorage.setItem('game-best-result', JSON.stringify(now));
+
+        if (this.oncompleteDo) this.oncompleteDo();
+      } catch (err) {
+        console.log(err);
       }
-      localStorage.setItem('game-best-result', JSON.stringify(now));
-
-      if (this.oncompleteDo) this.oncompleteDo();
     }
   }
 }

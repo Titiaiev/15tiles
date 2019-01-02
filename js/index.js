@@ -1,99 +1,94 @@
 /* eslint-disable import/extensions */
 import Game from './Game.js';
 
+
 window.onload = function onloadHandler() {
-  const openInfoBtn = document.getElementsByClassName('quastions')[0];
-  const closeInfoBtn = document.querySelector('.close-btn');
-  const shuffleBtn = document.getElementsByClassName('shuffle')[0];
-  const table = document.querySelector('table.board');
-  let timer = null;
-  let keysBlocked = false;
+  // запуск игры
+  const game = new Game(document.querySelector('table.board'));
 
-  const game = new Game(table);
-  window.game = game;
+  // app - представляет интерфейс приложения
+  const app = {
+    openInfoBtn: document.getElementsByClassName('quastions')[0], // информация
+    shuffleBtn: document.getElementsByClassName('shuffle')[0], // перемешать
+    closeInfoBtn: document.querySelector('.close-btn'), // кнопка закрытия информации
+    timer: null, // ссылка на setInterval, нужна для очистки
+    // флаг блокировки обработки нажатий клавиш.
+    // Нужен чтоб отключить клавиатуру когда открыта вкладка "информация"
+    keysBlocked: false,
+    game,
 
+    openInfo() {
+      // Edge бросает ошибку если открыть игру по протоколу file:// (запустить игру из проводника)
+      // https://stackoverflow.com/questions/32374875/localstorage-not-working-in-edge
+      try {
+        if (!window.localStorage) return;
+        const currentTime = document.querySelector('.current .time');
+        const currentSteps = document.querySelector('.current .steps');
+        const recordTime = document.querySelector('.record .time');
+        const recordSteps = document.querySelector('.record .steps');
 
-  // eslint-disable-next-line no-use-before-define
-  shuffleBtn.addEventListener('click', resetGame, false);
+        const recorded = localStorage.getItem('game-best-result');
 
-  // eslint-disable-next-line no-use-before-define
-  openInfoBtn.addEventListener('click', openInfo, false);
+        if (recorded) {
+          const _recorded = JSON.parse(recorded);
+          recordTime.textContent = _recorded.time;
+          recordSteps.textContent = _recorded.steps;
+        }
 
-  // eslint-disable-next-line no-use-before-define
-  closeInfoBtn.addEventListener('click', closeInfo, false);
+        app.toggle();
+        currentTime.textContent = app.game.time;
+        if (!app.timer) {
+          app.timer = setInterval(() => {
+            currentTime.textContent = app.game.time;
+          }, 1000);
+        }
 
+        currentSteps.textContent = app.game.steps;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
+    closeInfo() {
+      app.toggle();
+      clearInterval(app.timer);
+      app.timer = null;
+    },
+
+    toggle() {
+      const info = document.querySelector('.info');
+      info.classList.toggle('hidden');
+      app.keysBlocked = !app.keysBlocked;
+    },
+
+    resetGame() {
+      app.game.shuffle();
+      clearInterval(app.timer);
+      app.timer = null;
+    },
+
+  };
+
+  app.shuffleBtn.addEventListener('click', app.resetGame, false);
+  app.openInfoBtn.addEventListener('click', app.openInfo, false);
+  app.closeInfoBtn.addEventListener('click', app.closeInfo, false);
+
+  // обработка нажатий клавиш
   window.addEventListener('keydown', (e) => {
     const code = e.keyCode;
     // eslint-disable-next-line no-use-before-define
-    if (code === 27 && keysBlocked) { closeInfo(); } // 'Esc'
+    if (code === 27 && app.keysBlocked) { app.closeInfo(); } // 'Esc'
 
-    if (!keysBlocked) {
-      switch (code) {
-        case 37: // 'left'
-          game.move.call(game, 'left');
-          break;
-        case 39: // 'right'
-          game.move.call(game, 'right');
-          break;
-        case 38: // 'up'
-          game.move.call(game, 'up');
-          break;
-        case 40: // 'down'
-          game.move.call(game, 'down');
-          break;
-        default:
-          break;
-      }
-    }
+    if (!app.keysBlocked && code >= 37 && code <= 40) { game.trigger(code); }
   }, false);
 
+  // обработка события окончания игры (победы)
   game.oncompleteDo = () => {
-    clearInterval(timer);
-    timer = null;
-    table.parentElement.parentElement.classList.add('win');
+    clearInterval(app.timer);
+    app.timer = null;
+    document.querySelector('board-container').classList.add('win');
   };
 
-  function closeInfo() {
-    // eslint-disable-next-line no-use-before-define
-    toggle();
-    clearInterval(timer);
-    timer = null;
-  }
-
-  function openInfo() {
-    const currentTime = document.querySelector('.current .time');
-    const currentSteps = document.querySelector('.current .steps');
-    const recordTime = document.querySelector('.record .time');
-    const recordSteps = document.querySelector('.record .steps');
-
-    const recorded = localStorage.getItem('game-best-result');
-
-    if (recorded) {
-      const _recorded = JSON.parse(recorded);
-      recordTime.textContent = _recorded.time;
-      recordSteps.textContent = _recorded.steps;
-    }
-    // eslint-disable-next-line no-use-before-define
-    toggle();
-    currentTime.textContent = game.time;
-    if (!timer) {
-      timer = setInterval(() => {
-        currentTime.textContent = game.time;
-      }, 1000);
-    }
-
-    currentSteps.textContent = game.steps;
-  }
-
-  function toggle() {
-    const info = document.querySelector('.info');
-    info.classList.toggle('hidden');
-    keysBlocked = !keysBlocked;
-  }
-
-  function resetGame() {
-    game.shuffle();
-    clearInterval(timer);
-    timer = null;
-  }
+  // FIXME: когда закончу проект, убрать это глобальное свойство
+  window.game = app.game;
 };
