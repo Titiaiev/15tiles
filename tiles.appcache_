@@ -1,5 +1,8 @@
 CACHE MANIFEST
-# 24.12.18 - 23:44
+# 02.012.19 - 18:40
+
+
+
 
 CACHE:
 index.html
@@ -10,8 +13,11 @@ js/Board.js
 js/PositionGenerator.js
 js/Game.js
 js/EmptyField.js
+js/EventEmitter.js
 js/Tile.js
 favicon.png
+favicon.ico
+
 
 NETWORK:
 #https://use.fontawesome.com/releases/v5.6.3/css/all.css
