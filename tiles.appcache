@@ -1,0 +1,26 @@
+CACHE MANIFEST
+# 02.012.19 - 23:06
+
+
+
+
+CACHE:
+index.html
+css/style.css
+css/info.css
+css/win.css
+js/index.js
+js/Board.js
+js/PositionGenerator.js
+js/Game.js
+js/EmptyField.js
+js/EventEmitter.js
+js/Tile.js
+favicon.png
+favicon.ico
+
+
+NETWORK:
+#https://use.fontawesome.com/releases/v5.6.3/css/all.css
+#https://use.fontawesome.com/releases/v5.6.3/webfonts/fa-solid-900.woff2
+#https://use.fontawesome.com/releases/v5.6.3/webfonts/fa-brands-400.woff2
