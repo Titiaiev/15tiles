@@ -4,7 +4,8 @@
   "description": "Игра в 'Пятнашки'",
   "main": "js/index.js",
   "scripts": {
-    "build": "babel js -d es5"
+    "build": "babel js -d es5",
+    "start": "tsc --watch"
   },
   "keywords": [],
   "author": "",
