@@ -1,8 +1,8 @@
 import Tile from './Tile.js';
-import EmptyField from './EmptyField.js';
-import PositionGenerator from './PositionGenerator.js';
 import Board from './Board.js';
-import { IField } from './main'
+// import { IField } from './main'
+
+type Config = { tilesCount: number };
 
 enum Direction {
   up = 'up',
@@ -11,38 +11,26 @@ enum Direction {
   right = 'right'
 }
 
-const getUniqRandom = function (max: number): number[] {
-  const uniqs: number[] = [];
-
-  const random = (max: number) => Math.floor(1 + Math.random() * (max));
-  let i = random(max);
-
-  while (uniqs.length < (max)) {
-    while (uniqs.indexOf(i) !== -1) {
-      i = random(max);
-    }
-    uniqs.push(i);
-  }
-  return uniqs;
-};
 
 class Game {
   private board: Board;
-  private empty: EmptyField;
-  private fields: IField[];
+  private empty: Tile;
+  private fields: Tile[];
   private emptyField: number;
   private gameTime: string | null;
   private timeStart: number | any;
   private _steps: number;
-  private cb: any;
+  private cb: () => void;
+  private config: Config;
 
 
-  constructor(table: HTMLTableElement) {
+  constructor(table: HTMLTableElement, config?: Config) {
 
     this.board = new Board(table);
     this.empty = null;
-    // eslint-disable-next-line no-param-reassign
     table.innerHTML = '';
+
+    // this.config.tilesCount = (config && config.tilesCount) ? config.tilesCount : 16;
 
     this.init();
   }
@@ -54,24 +42,9 @@ class Game {
     this.gameTime = null;
     this._steps = 0;
 
-    const orders = getUniqRandom(15);
-    const posgen = new PositionGenerator(3);
-    // window.posgen = posgen;
-
-    for (let i = 0; i < 15; i += 1) {
-      const pos = posgen.next();
-      // console.log(pos);
-
-      const tile = new Tile(orders[i], pos);
-      tile.on('trymove', this.tileMoveHandle.bind(this));
-      // console.log(tile);
-
-      this.fields.push(tile);
-    }
-    this.empty = new EmptyField(posgen.next());
-    this.fields.push(this.empty);
-    // console.log(this.fields);
-
+    this.fields = Tile.createDeck(16, this.tileMoveHandle);
+    this.empty = this.fields[this.emptyField];
+    console.log(this.empty)
 
     if (!this.solvable(this.fields)) {
     // console.log('_solvabled');
@@ -130,7 +103,7 @@ class Game {
   }
 
   // проверить собирётся ли игра
-  private solvable(a: IField[]): boolean {
+  private solvable(a: Tile[]): boolean {
   // eslint-disable-next-line no-var
     var kDisorder: number;
     let i: number;
@@ -145,7 +118,8 @@ class Game {
 
   // проверить может ли двигаться плитка,
   // если да, то куда. Инициировать перемещение плитки
-  private tileMoveHandle(tile: Tile): void {
+  private tileMoveHandle = (tile: Tile): void => {
+    console.log(this)
     const { x, y } = tile.position;
     const deltaX = x - this.empty.position.x;
     const deltaY = y - this.empty.position.y;

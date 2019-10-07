@@ -1,4 +1,4 @@
-import { IField } from './main'
+import Tile from './Tile';
 
 class Board {
   private matrix: any;
@@ -21,7 +21,7 @@ class Board {
     return this._parent;
   }
 
-  update(tiles: IField[]): void {
+  update(tiles: Tile[]): void {
     tiles.forEach((tile) => {
       const { x, y } = tile.position;
       this.matrix[y][x].innerHTML = '';

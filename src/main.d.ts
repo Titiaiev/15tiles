@@ -12,3 +12,12 @@ export interface IField {
   id: number;
   position: IPoint;
 }
+
+export interface IUI {
+  openInfoBtn: HTMLButtonElement;
+  closeInfoBtn: HTMLButtonElement;
+  currentTime: string;
+  currentSteps: string;
+  recordTime: string;
+  recordSteps: string;
+}

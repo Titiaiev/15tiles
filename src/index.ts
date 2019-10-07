@@ -60,7 +60,8 @@ function main() {
 
 
   // запуск игры
-  const game = new Game(document.querySelector('table.board'));
+  const game = new Game(document.querySelector('table.board'), { tilesCount: 16 });
+
 
   const openInfoBtn = document.getElementsByClassName('quastions')[0]; // информация
   const shuffleBtn = document.getElementsByClassName('shuffle')[0]; // перемешать
